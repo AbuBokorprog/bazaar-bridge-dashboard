@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Description, Person } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import {
   Box,
   Button,
