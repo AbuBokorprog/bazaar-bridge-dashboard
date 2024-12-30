@@ -359,7 +359,7 @@ const Sidebar = () => {
       </Drawer>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex bg-secondary-100 flex-col w-64 h-screen fixed">
+      <div className="hidden lg:flex bg-secondary-50 flex-col w-64 h-screen fixed border shadow-xl">
         <div className="px-4 text-center">
           <h1 className="text-2xl font-bold">{user?.name}</h1>
           <div className="text-center mx-auto">
