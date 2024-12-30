@@ -62,8 +62,6 @@ const Login: React.FC = () => {
           navigate('/dashboard/admin-dashboard');
         } else if (res?.data?.role === 'VENDOR') {
           navigate('/dashboard/vendor-dashboard');
-        } else {
-          navigate('/');
         }
 
         reset();
@@ -129,10 +127,10 @@ const Login: React.FC = () => {
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{' '}
               <Link
-                to="/register"
+                to="/become-vendor"
                 className="font-medium text-primary-600 hover:text-primary-500"
               >
-                create a new account
+                Become a vendor
               </Link>
             </p>
           </div>

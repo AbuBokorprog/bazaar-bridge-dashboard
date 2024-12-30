@@ -26,6 +26,7 @@ import AdminAllUsers from '../pages/dashboard/admin/AdminAllUsers';
 import AdminDashboard from '../pages/dashboard/admin/AdminDashboard';
 import Dashboard from '../layout/dashboard/Dashboard';
 import Profile from '../pages/dashboard/common/Profile';
+import BecomeVendor from '../pages/BecomeVendor';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <Login />,
+      },
+      {
+        path: '/become-vendor',
+        element: <BecomeVendor />,
       },
     ],
   },
