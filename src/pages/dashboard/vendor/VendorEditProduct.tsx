@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Description, Person } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -13,7 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Controller,
   FieldValues,
@@ -34,10 +33,13 @@ import { toast } from 'sonner';
 import Loader from '../../../components/ui/Loader';
 import { useNavigate, useParams } from 'react-router-dom';
 import Title from '../../../components/helmet/Title';
+import RichTextEditor from '../../../components/RichTextEditor';
+import { Person } from '@mui/icons-material';
 
 type TCategorySchema = z.infer<typeof updateProductSchema>;
 
 const VendorEditProduct: React.FC = () => {
+  const [value, setValue] = useState<string>('');
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: product } = useGetProductByIdQuery(id);
@@ -52,11 +54,9 @@ const VendorEditProduct: React.FC = () => {
     mode: 'onBlur',
     defaultValues: {
       name: product?.data?.product?.name || '', // Product name
-      description: product?.data?.product?.description || '', // Description
       regular_price: product?.data?.product?.regular_price || '', // Regular price
       discount_price: product?.data?.product?.discount_price || '', // Discount price
       inventory: product?.data?.product?.inventory || '', // Inventory
-
       images: product?.data?.product?.images || [{}], // Array of image URLs
       productColors: product?.data?.product?.colors?.map((color: any) => ({
         color: color?.color,
@@ -148,7 +148,7 @@ const VendorEditProduct: React.FC = () => {
       });
     }
 
-    formData.append('data', JSON.stringify(data));
+    formData.append('data', JSON.stringify({ ...data, description: value }));
     try {
       const res = await updateProduct({
         id: product?.data?.product?.id,
@@ -181,8 +181,9 @@ const VendorEditProduct: React.FC = () => {
   };
 
   useEffect(() => {
+    setValue(product?.data?.product?.description);
     window.scrollTo(0, 0);
-  }, []);
+  }, [id, product]);
 
   return (
     <div className="flex-1 px-8 py-6 ml-0 lg:ml-64">
@@ -528,22 +529,8 @@ const VendorEditProduct: React.FC = () => {
             Add Image
           </Button>
           <div>
-            <TextField
-              fullWidth
-              label="Store Description"
-              multiline
-              rows={4}
-              {...register('description')}
-              error={!!errors.description}
-              helperText={errors.description?.message}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Description className="text-gray-400" />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <InputLabel>Product description:</InputLabel>
+            <RichTextEditor onChange={setValue} value={value} />
           </div>
           <div className="mx-auto text-center">
             <Button variant="contained" type="submit">

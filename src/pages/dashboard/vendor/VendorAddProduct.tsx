@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Controller,
   FieldValues,
@@ -31,10 +31,12 @@ import { toast } from 'sonner';
 import Loader from '../../../components/ui/Loader';
 import { TShop } from '../../../types/shop.type';
 import Title from '../../../components/helmet/Title';
+import RichTextEditor from '../../../components/RichTextEditor';
 
 type TCategorySchema = z.infer<typeof productSchema>;
 
 const VendorAddProduct: React.FC = () => {
+  const [value, setValue] = useState<string>('');
   const [category, setCategory] = React.useState('');
   const [shop, setShop] = React.useState('');
   const [status, setStatus] = React.useState('');
@@ -120,6 +122,9 @@ const VendorAddProduct: React.FC = () => {
 
   const [createProduct] = useCreateProductMutation();
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (!value) {
+      toast.error('Please add description!');
+    }
     const toastId = toast.loading('Loading...');
 
     const formData = new FormData();
@@ -127,7 +132,7 @@ const VendorAddProduct: React.FC = () => {
     data.images.forEach((file: any) => {
       formData.append('files[]', file.file);
     });
-    formData.append('data', JSON.stringify(data));
+    formData.append('data', JSON.stringify({ ...data, description: value }));
     try {
       const res = await createProduct(formData).unwrap();
       if (res?.success) {
@@ -502,22 +507,8 @@ const VendorAddProduct: React.FC = () => {
             Add Image
           </Button>
           <div>
-            <TextField
-              fullWidth
-              label="Store Description"
-              multiline
-              rows={4}
-              {...register('description')}
-              error={!!errors.description}
-              helperText={errors.description?.message}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Description className="text-gray-400" />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <InputLabel>Product description:</InputLabel>
+            <RichTextEditor onChange={setValue} value={value} />
           </div>
           <div className="mx-auto text-center">
             <Button variant="contained" type="submit">

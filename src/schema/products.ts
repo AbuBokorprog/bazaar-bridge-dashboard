@@ -7,7 +7,6 @@ export const productSchema = z.object({
       file: z.instanceof(File).optional(),
     }) || z.string().optional()
   ),
-  description: z.string().min(1, 'description is required!'),
   regular_price: z.string().min(1, 'Regular price is required!'),
   discount_price: z.string().min(1, 'Regular price is required!'),
   inventory: z.string().min(1, 'Inventory is required!'),
@@ -42,7 +41,6 @@ export const updateProductSchema = z.object({
       })
     )
     .optional(),
-  description: z.string().min(1, 'description is required!').optional(),
   regular_price: z.string().min(1, 'Regular price is required!').optional(),
   discount_price: z.string().min(1, 'Regular price is required!').optional(),
   inventory: z.string().min(1, 'Inventory is required!').optional(),
