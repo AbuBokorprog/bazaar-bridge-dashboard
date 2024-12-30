@@ -7,11 +7,11 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../../store';
-import { toast } from 'sonner';
-import { login, logout } from '../auth-slice/AuthSlice';
+
+// Define a service using a base URL and expected endpoints
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://pokeapi.co/api/v2/',
+  baseUrl: `https://bazaar-bridge.vercel.app/api`,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -19,6 +19,7 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
+
     return headers;
   },
 });
@@ -28,51 +29,50 @@ const customBaseQuery: BaseQueryFn<
   BaseQueryApi,
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
-  let result = await baseQuery(args, api, extraOptions);
+  const result: any = baseQuery(args, api, extraOptions);
 
-  console.log(result);
-  if (result?.error) {
-    toast.error(result?.error?.data?.message as string);
-  }
+  // if (result?.error?.status === 500) {
+  //   const res = await fetch('http://localhost:3000/api', {
+  //     method: 'POST',
+  //     credentials: 'include',
+  //   });
 
-  // if (result?.error?.status === 400) {
-  //   toast.error(result?.error?.data?.message as string);
+  //   const data = await res.json();
+  //   if (data?.data?.accessToken) {
+  //     const user = (api.getState() as RootState).auth.user;
+
+  //     api.dispatch(login({ user: user, token: data.data?.accessToken }));
+
+  //     result = await baseQuery(args, api, extraOptions);
+  //   } else {
+  //     api.dispatch(logout());
+  //   }
   // }
-
-  if (result?.error?.status === 401) {
-    const res = await fetch('http://localhost:5000/auth/refresh-token', {
-      method: 'POST',
-      credentials: 'include',
-    });
-
-    const data = await res.json();
-    if (data?.data?.accessToken) {
-      const user = (api.getState() as RootState).auth.user;
-
-      api.dispatch(login({ user: user, token: data.data?.accessToken }));
-
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(logout());
-    }
-  }
 
   return result;
 };
 
-// Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: customBaseQuery,
-  endpoints: (builder) => ({
-    getPokemonByName: builder.query({
-      query: (name) => ({
-        url: `pokemon/${name}`,
-      }),
-    }),
-  }),
+  tagTypes: [
+    'users',
+    'shops',
+    'categories',
+    'products',
+    'reviews',
+    'carts',
+    'orders',
+    'comparison',
+    'coupon',
+    'followShop',
+    'reports',
+    'recent-products',
+    'wishlist',
+    'newsletter',
+  ],
+  endpoints: () => ({}),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPokemonByNameQuery } = baseApi;
