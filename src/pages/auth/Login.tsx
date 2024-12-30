@@ -96,19 +96,19 @@ const Login: React.FC = () => {
             token: res?.data?.token,
           })
         );
+
         toast.success(res?.message, { id: tokenId, duration: 200 });
 
         if (res?.data?.role === 'ADMIN' || res?.data?.role === 'SUPER_ADMIN') {
           navigate('/dashboard/admin-dashboard');
         } else if (res?.data?.role === 'VENDOR') {
           navigate('/dashboard/vendor-dashboard');
-        } else {
-          navigate('/');
         }
 
         reset();
       }
     } catch (error: any) {
+      console.log(error);
       toast.error(error?.data?.message as string, {
         id: tokenId,
         duration: 200,
@@ -140,17 +140,6 @@ const Login: React.FC = () => {
           <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
               <div className="my-5 mx-auto flex items-center justify-center gap-4">
-                <Button
-                  variant="contained"
-                  onClick={() =>
-                    easyLoginHandler({
-                      email: 'customer@gmail.com',
-                      password: '12345678',
-                    })
-                  }
-                >
-                  User
-                </Button>
                 <Button
                   variant="contained"
                   onClick={() =>

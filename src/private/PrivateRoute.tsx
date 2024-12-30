@@ -15,15 +15,15 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, roles }) => {
   const dispatch = useAppDispatch();
   const user: any = JwtDecode(token as string);
 
-  if (!user) {
-    return <Navigate to={'/login'} replace />;
+  if (!user || !token) {
+    return <Navigate to={'/'} replace />;
   }
 
   if (roles?.length > 0 && (!user || !roles.includes(user?.role))) {
     dispatch(logout());
-    return <Navigate to={'/login'} replace />;
+    return <Navigate to={'/'} replace />;
   }
-  return <div>{children}</div>;
+  return children;
 };
 
 export default PrivateRoute;
