@@ -320,7 +320,10 @@ const DashboardProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <FaEdit className="mr-2" /> Edit Product
           </MenuItem>
         </Link>
-        <Link to={`/product-details/${product?.id}`}>
+        <Link
+          to={`https://bazaar-bridge-front.vercel.app/product-details/${product?.id}`}
+          target="_blank"
+        >
           <MenuItem>
             <FaEye className="mr-2" /> View Details
           </MenuItem>

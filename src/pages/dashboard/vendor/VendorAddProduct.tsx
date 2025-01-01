@@ -141,9 +141,9 @@ const VendorAddProduct: React.FC = () => {
           duration: 200,
         });
         reset();
+        setValue('');
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.data?.message, {
         id: toastId,
         duration: 200,
