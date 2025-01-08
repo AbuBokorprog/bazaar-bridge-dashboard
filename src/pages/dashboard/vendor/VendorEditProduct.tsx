@@ -162,7 +162,6 @@ const VendorEditProduct: React.FC = () => {
         navigate('/dashboard/vendor/all-products');
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.data?.message, {
         id: toastId,
         duration: 200,

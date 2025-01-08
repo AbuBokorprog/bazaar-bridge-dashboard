@@ -8,7 +8,7 @@ export const productSchema = z.object({
     }) || z.string().optional()
   ),
   regular_price: z.string().min(1, 'Regular price is required!'),
-  discount_price: z.string().min(1, 'Regular price is required!'),
+  discount_price: z.string().optional(),
   inventory: z.string().min(1, 'Inventory is required!'),
   productStatus: z.enum(['REGULAR', 'FLASH_SALE', 'NEW', 'HOT', 'DISCOUNT']),
   shopId: z.string().min(2, 'shopId is required!'),
